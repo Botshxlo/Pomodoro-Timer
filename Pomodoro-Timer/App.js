@@ -1,42 +1,59 @@
 import React, { Component} from 'react';
-import { Layout } from './utils/layout.js'
+import { Layout, Change } from './utils/layout.js'
 import {Vibration} from 'react-native'
-
 
 export default class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      count: {
-        minutes: 24,
-        seconds: 59,
-      },
       showButton: true,
+      time: {
+        minutes: '25',
+        seconds: '00',
+      },
+      work: {
+        minutes: '',
+        seconds: '',
+      },
+      break: {
+        minutes: '',
+        seconds: '',
+      }
     }
   }
 
-  vibrate = () => {
-    Vibration.vibrate([500, 500, 500])
+  onChangeWorkMinsSeconds = () => {
+    const { 
+      workMinuteValue, 
+      workSecondsValue, 
+    } = Change()
+
+    this.setState(prevState => ({
+      time: {
+        minutes: prevState.time.minutes + 1,
+        seconds: prevState.time.seconds + 1,
+      }
+    }))
   }
 
   incr = () => {
-    if (this.state.count.minutes === 0 && this.state.count.seconds === 0) {
+    if (this.state.time.minutes === 0 && this.state.time.seconds === 0) {
       this.vibrate()
     }
 
-    if (this.state.count.seconds === 0) {
+    if (this.state.time.seconds === '00') {
       this.setState(prevState => ({
-        count: {
-          minutes: prevState.count.minutes - 1,
-          seconds: 60,
+        time: {
+          minutes: `${prevState.time.minutes - 1}`,
+          seconds: `${60}`,
         }
       }))
     }
 
     this.setState(prevState => ({
-      count: {
-        minutes: prevState.count.minutes,
-        seconds: prevState.count.seconds - 1,
+      time: {
+        minutes: prevState.time.minutes < 10 ? `0${prevState.time.minutes-1+1}` : `${prevState.time.minutes}`,
+        seconds: prevState.time.seconds < 10 ? `0${prevState.time.seconds - 1}` : `${prevState.time.seconds - 1}`,
       }
     }))
     
@@ -64,7 +81,7 @@ export default class App extends Component {
   stopTimer = () => {
     clearInterval(this.interval)
     this.setState(prevState => ({
-      count: prevState.count,
+      time: prevState.time,
       showButton: !prevState.showButton
     }))
   }
@@ -73,7 +90,7 @@ export default class App extends Component {
   reset = () => {
     clearInterval(this.interval)
     this.setState(() => ({
-      count: {
+      time: {
         minutes: 24,
         seconds: 59,
       },
@@ -88,10 +105,11 @@ export default class App extends Component {
         <Layout 
           resetFunction={this.reset} 
           button={'start'} 
+          changeFunction={this.onChangeWorkMinsSeconds}
           // for a start button
           // pass in a function that will start the timer or resume the current time
           function={this.changeCountFlipButton}
-          time={this.state.count.minutes + ":" + this.state.count.seconds} 
+          time={this.state.time.minutes + ":" + this.state.time.seconds} 
         />
       )
     } else { // false {show stop button}
@@ -99,10 +117,11 @@ export default class App extends Component {
         <Layout
           resetFunction={this.reset} 
           button={'stop'} 
+          changeFunction={this.onChangeWorkMinsSeconds}
           // for a stop button
           // pass in a function that will stop the timer and flip the button to { start }
           function={this.stopTimer}
-          time={this.state.count.minutes + ":" + this.state.count.seconds} 
+          time={this.state.time.minutes + ":" + this.state.time.seconds} 
         />
       )
     }
