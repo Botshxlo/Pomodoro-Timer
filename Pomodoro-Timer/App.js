@@ -183,10 +183,6 @@ export default class App extends Component {
   stopTimer = () => {
     clearInterval(this.interval)
     this.setState(prevState => ({
-      // work: {
-      //   minutes: `${prevState.work.minutes}`,
-      //   seconds: `${prevState.work.seconds}`,
-      // },
       showButton: !prevState.showButton
     }))
   }
