@@ -5,6 +5,9 @@ import PropTypes from 'prop-types';
 export const Layout = props => {
     return (
       <View style={styles.view}>
+        <View style={styles.headingContainer}>
+        <Text style={styles.heading}>Pomodoro Timer</Text>
+        </View>
         <View style={styles.container}>
 
             <Text style={styles.header}>{props.title}</Text>
@@ -31,6 +34,9 @@ export const Layout = props => {
               placeholder="Enter number"
               onChangeText={value => props.setWorkMinutes(value)}
               defaultValue={'25'}
+              maxLength = {2}
+              keyboardType='numeric'
+              
               />
 
               <Text>  </Text>
@@ -43,6 +49,8 @@ export const Layout = props => {
               placeholder="Enter number"
               onChangeText={value => props.setWorkSeconds(value)}
               defaultValue={'00'}
+              maxLength={2}
+              keyboardType='numeric'
               />
 
             </View>
@@ -59,6 +67,8 @@ export const Layout = props => {
               placeholder="Enter number"
               onChangeText={value => props.setBreakMinutes(value)}
               defaultValue={'05'}
+              maxLength={2}
+              keyboardType='numeric'
               />
 
               <Text> </Text>
@@ -71,6 +81,8 @@ export const Layout = props => {
               placeholder="Enter number"
               onChangeText={value => props.setBreakSeconds(value)}
               defaultValue={'00'}
+              maxLength={2}
+              keyboardType='numeric'
               />
 
             </View>
@@ -87,7 +99,7 @@ Layout.propTypes = {
   setWorkMinutes: PropTypes.func.isRequired,
   setWorkSeconds: PropTypes.func.isRequired,
   setBreakMinutes: PropTypes.func.isRequired,
-  setBreakSeconds: PropTypes.func.isRequired
+  setBreakSeconds: PropTypes.func.isRequired,
 }
 
 const styles = StyleSheet.create({
@@ -102,6 +114,16 @@ const styles = StyleSheet.create({
       borderRadius: 50,
       margin: 80,
       padding: 30,
+    },
+    headingContainer: {
+      justifyContent: 'center',
+      alignItems: 'center',
+      padding: 30,
+    },
+    heading: {
+      fontWeight: 700,
+      fontFamily: 'monospace',
+      fontSize: 40,
     },
     header: {
       fontSize: 50,
